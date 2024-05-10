@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+   <style>
+    body, html {
+    height: 100%;
+    background-color: black;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.calculator-body {
+    width: 300px;
+    margin: auto;
+    border-radius: 12px;
+}
+
+.screen {
+    background-color: #333;
+    height: 70px;
+    font-size: 32px;
+    border-radius: 12px;
+}
+
+button {
+    height: 60px; 
+    width: 60px; 
+}
+   </style>
+</head>
+<body>
+    <div class="container calculator-body">
+        <div class="screen p-3 mb-2 text-right text-white" id="display">0</div>
+        <div class="grid grid-cols-4 gap-2">
+            <div><button class="bg-gray-300 text-gray-800 w-full p-3 rounded-full" onclick="clearDisplay()">AC</button></div>
+            <div><button class="bg-gray-300 text-gray-800 w-full p-3 rounded-full" onclick="changeSign()">+/-</button></div>
+            <div><button class="bg-gray-300 text-gray-800 w-full p-3 rounded-full">%</button></div>
+            <div><button class="bg-yellow-600 text-white w-full p-3 rounded-full" onclick="appendValue('÷')">÷</button></div>
+            <div><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('7')">7</button></div>
+            <div><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('8')">8</button></div>
+            <div><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('9')">9</button></div>
+            <div><button class="bg-yellow-600 text-white w-full p-3 rounded-full" onclick="appendValue('×')">×</button></div>
+            <div><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('4')">4</button></div>
+            <div><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('5')">5</button></div>
+            <div><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('6')">6</button></div>
+            <div><button class="bg-yellow-600 text-white w-full p-3 rounded-full" onclick="appendValue('-')">-</button></div>
+            <div><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('1')">1</button></div>
+            <div><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('2')">2</button></div>
+            <div><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('3')">3</button></div>
+            <div><button class="bg-yellow-600 text-white w-full p-3 rounded-full" onclick="appendValue('+')">+</button></div>
+            <div class="col-span-2"><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('0')">0</button></div>
+            <div><button class="bg-gray-700 text-white w-full p-3 rounded-full" onclick="appendValue('.')">.</button></div>
+            <div><button class="bg-gray-800 text-white w-full p-3 rounded-full" onclick="calculate()">=</button></div>
+        </div>
+    </div>
+</body>
+<script>
+    let expression = '';
+
+    function appendValue(value) {
+        expression += value;
+        document.getElementById('display').innerText = expression;
+    }
+
+    function clearDisplay() {
+        expression = '';
+        document.getElementById('display').innerText = '0';
+    }
+
+    function changeSign() {
+        if (expression.startsWith('-')) {
+            expression = expression.substring(1);
+        } else {
+            expression = '-' + expression;
+        }
+        document.getElementById('display').innerText = expression;
+    }
+
+    function calculate() {
+        try {
+            const result = eval(expression);
+            expression = result.toString();
+            document.getElementById('display').innerText = result;
+        } catch (error) {
+            document.getElementById('display').innerText = 'Error';
+        }
+    }
+</script>
+</html>

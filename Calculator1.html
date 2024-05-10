@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #333;
+        }
+
+        .calculator {
+            width: 300px;
+            border-radius: 12px;
+        }
+
+        .display {
+            height: 60px;
+            font-size: 2rem;
+            background: #000;
+            margin-bottom: 10px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 10px;
+            color: white;
+        }
+
+        .button-panel {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .btn-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #323538;
+            color: white;
+            border: none;
+        }
+
+        .btn-ac {
+            width: 100%;
+            height: 100%;
+            font-size: 1.2rem;
+            padding-top: 5px;
+        }
+        .gr{
+          background-color:#6c757d;
+        }
+        .or{
+          background-color:#c27238;
+        }
+        .double-width {
+            border-radius: 25px;
+            overflow: hidden;
+            width: 100%;
+            grid-column: span 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator bg-dark text-white">
+        <div class="display" id="display">0</div>
+        <div class="button-panel">
+            <button class="btn btn-circle btn-secondary gr" onclick="clearDisplay()">AC</button>
+            <button class="btn btn-circle btn-secondary gr" onclick="toggleSign()">+/-</button>
+            <button class="btn btn-circle btn-secondary gr" onclick="percentage()">%</button>
+            <button class="btn btn-circle btn-warning or" onclick="appendOperator('/')">÷</button>
+            <button class="btn btn-circle btn-secondary" onclick="appendNumber('7')">7</button>
+            <button class="btn btn-circle btn-secondary" onclick="appendNumber('8')">8</button>
+            <button class="btn btn-circle btn-secondary" onclick="appendNumber('9')">9</button>
+            <button class="btn btn-circle btn-warning or" onclick="appendOperator('*')">x</button>
+            <button class="btn btn-circle btn-secondary" onclick="appendNumber('4')">4</button>
+            <button class="btn btn-circle btn-secondary" onclick="appendNumber('5')">5</button>
+            <button class="btn btn-circle btn-secondary" onclick="appendNumber('6')">6</button>
+            <button class="btn btn-circle btn-warning or" onclick="appendOperator('-')">-</button>
+            <button class="btn btn-circle btn-secondary" onclick="appendNumber('1')">1</button>
+            <button class="btn btn-circle btn-secondary" onclick="appendNumber('2')">2</button>
+            <button class="btn btn-circle btn-secondary" onclick="appendNumber('3')">3</button>
+            <button class="btn btn-circle btn-warning or" onclick="appendOperator('+')">+</button>
+            <button class="btn btn-circle btn-secondary double-width" onclick="appendNumber('0')">0</button>
+            <button class="btn btn-circle btn-secondary" onclick="appendDecimal()">.</button>
+            <button class="btn btn-circle btn-warning" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+      let currentInput = '0';
+      let lastOperator = null;
+      let result = null;
+  
+      function updateDisplay() {
+          document.getElementById('display').innerText = currentInput;
+      }
+  
+      function appendNumber(number) {
+          if (currentInput === '0' && number !== '0') {
+              currentInput = number;
+          } else {
+              currentInput += number;
+          }
+          updateDisplay();
+      }
+  
+      function appendDecimal() {
+          if (!currentInput.includes('.')) {
+              currentInput += '.';
+              updateDisplay();
+          }
+      }
+  
+      function appendOperator(operator) {
+          if (lastOperator !== null) {
+              calculate();
+          }
+          lastOperator = operator;
+          currentInput += operator;
+          updateDisplay();
+      }
+  
+      function clearDisplay() {
+          currentInput = '0';
+          lastOperator = null;
+          result = null;
+          updateDisplay();
+      }
+  
+      function toggleSign() {
+          currentInput = String(-parseFloat(currentInput));
+          updateDisplay();
+      }
+  
+      function percentage() {
+          currentInput = String(parseFloat(currentInput) / 100);
+          updateDisplay();
+      }
+  
+      function calculate() {
+          if (lastOperator !== null) {
+              result = eval(currentInput);
+              currentInput = String(result);
+              lastOperator = null;
+              updateDisplay();
+          }
+      }
+  
+      document.addEventListener('keydown', (event) => {
+          const key = event.key;
+          if (!isNaN(key) || key === '.') {
+              appendNumber(key);
+          } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+              appendOperator(key);
+          } else if (key === 'Enter' || key === '=') {
+              calculate();
+          } else if (key === 'Backspace') {
+              currentInput = currentInput.slice(0, -1);
+              updateDisplay();
+          }
+      });
+  </script>
+  
+</body>
+</html>
